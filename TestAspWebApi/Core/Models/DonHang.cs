@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Core.Models
     public class DonHang
     {
         public int ProductId { get; set; }
+        [Key]
         public int MaDonHang {  get; set; }
         public int SoLuong { get; set; }
         public Product? Product { get; set; }
