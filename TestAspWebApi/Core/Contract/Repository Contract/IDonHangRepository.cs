@@ -1,5 +1,7 @@
-﻿using Core.Models;
 
+﻿using System;
+
+using Core.Models;
 
 namespace Core.Contract.Repository_Contract
 {
@@ -10,5 +12,7 @@ namespace Core.Contract.Repository_Contract
         Task<DonHang?> UpdateAsycn(DonHang donhang);
         Task<DonHang> AddAsync(DonHang donhang);
         Task<bool> DeleteAsycn(int id);
+
+
     }
 }

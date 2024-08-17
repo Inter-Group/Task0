@@ -5,7 +5,7 @@ using Core.Mapper;
 
 namespace Core.Services
 {
-    internal class DonHangServices : IDonHangServices
+    public class DonHangServices : IDonHangServices
     {
         private readonly IDonHangRepository _donhangRepository;
 
