@@ -1,13 +1,8 @@
 ﻿using Core.Contract.Services_Contract;
 ﻿using Core.Contract.Repository_Contract;
-using Core.Contract.Services_Contract;
 using Core.DTO.Categorydto;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Core.Services
 {
