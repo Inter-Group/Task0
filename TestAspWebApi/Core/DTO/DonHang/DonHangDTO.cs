@@ -12,7 +12,7 @@ namespace Core.DTO.DonHang
     {
         public int MaDonHang { get; set; }
         public int SoLuong { get; set; }
-        public IEnumerable<ProductDTO> Products { get; set; }
+        public int? ProductId { get; set; }
 
     }
 }
