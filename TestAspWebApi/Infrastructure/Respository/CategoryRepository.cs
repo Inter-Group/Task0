@@ -25,7 +25,7 @@ namespace Infrastructure.Respository
             return category;
         }
 
-        public async Task<Category> DeleteAsycn(int id)
+        public async Task<Category?> DeleteAsycn(int id)
         {
             Category category = await GetByIdAsync(id);
             if (category == null)
@@ -41,15 +41,19 @@ namespace Infrastructure.Respository
             return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Category> GetByIdAsync(int id)
+        public async Task<Category?> GetByIdAsync(int id)
         {
             Category? category = await _context.Categories.Include(c => c.Product).FirstOrDefaultAsync(c => c.CategoryId == id);
             return category;
         }
 
-        public async Task<Category> UpdateAsycn(int id,CategoryDTO categoryUpdateRequest)
+        public async Task<Category?> UpdateAsycn(int id,CategoryDTO categoryUpdateRequest)
         {
            Category category = await GetByIdAsync(id);
+            if (category == null)
+            {
+                return null;
+            }
            category.CatgegoryName = categoryUpdateRequest.CatgegoryName;
             await _context.SaveChangesAsync();
             return category;

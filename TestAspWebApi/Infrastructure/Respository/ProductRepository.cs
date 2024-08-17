@@ -1,5 +1,8 @@
 ﻿using Core.Contract.Repository_Contract;
+using Core.DTO.Product;
 using Core.Models;
+using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +13,51 @@ namespace Infrastructure.Respository
 {
     public class ProductRepository : IProductRepository
     {
-        public Task<Product> CreatAsycn(Product product)
+        private readonly ApplicationDbContext _context;
+        public ProductRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Product> CreatAsycn(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+            return product;
         }
 
-        public Task<Product> DeleteAsycn(int id)
+        public async Task<Product?> DeleteAsycn(int id)
         {
-            throw new NotImplementedException();
+            Product product = await GetByIdAsync(id);
+            if (product == null)
+            {
+                return null;
+            }
+            _context.Products.Remove(product);
+            return product;
         }
 
-        public Task<Product> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+           return await _context.Products.ToListAsync();
         }
 
-        public Task<Product> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            Product? product = await _context.Products.Include(p => p.DonHang).FirstOrDefaultAsync(p => p.ProductId == id);
+            
+            return product;
         }
 
-        public Task<Product> UpdateAsycn(Product product)
+        public async Task<Product?> UpdateAsycn(int id, ProductDTO productUpdateRequest)
         {
-            throw new NotImplementedException();
+            Product product = await GetByIdAsync(id);
+            if (product == null)
+            {
+                return null;
+            }
+            product.ProductName = productUpdateRequest.ProductName;
+            await _context.SaveChangesAsync();
+            return product;
         }
     }
 }
