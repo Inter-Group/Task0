@@ -1,4 +1,4 @@
-﻿using Core.DTO.Product;
+﻿using Core.DTO.Productdto;
 using Core.Models;
 using System;
 using System.Collections.Generic;

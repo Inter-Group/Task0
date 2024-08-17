@@ -1,4 +1,4 @@
-﻿using Core.DTO.Category;
+﻿using Core.DTO.Categorydto;
 using Core.Models;
 using System;
 using System.Collections.Generic;

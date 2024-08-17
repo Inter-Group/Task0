@@ -1,4 +1,4 @@
-﻿using Core.DTO.Product;
+﻿using Core.DTO.Categorydto;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.DTO.Category
+namespace Core.DTO.Categorydto
 {
-    public class CategoryDTO
+    public class CategoryUpdateRequest
     {
-        public int CategoryId { get; set; }
         public string CatgegoryName { get; set; } = string.Empty;
-        public IEnumerable<ProductDTO> Products { get; set; }
     }
+
 }
+
+

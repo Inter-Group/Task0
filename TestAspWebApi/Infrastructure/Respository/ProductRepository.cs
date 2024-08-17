@@ -1,5 +1,5 @@
 ﻿using Core.Contract.Repository_Contract;
-using Core.DTO.Product;
+using Core.DTO.Productdto;
 using Core.Models;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
