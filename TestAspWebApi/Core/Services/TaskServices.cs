@@ -16,6 +16,10 @@ namespace Core.Services
         public async Task<TaskDTO> CreateTaskAsync(TaskDTO taskDto)
         {
             var task = taskDto.FromTaskDTO();
+            if (task.Start.TimeOfDay < new TimeSpan(7, 0, 0) || task.End.TimeOfDay > new TimeSpan(17, 0, 0) || task.End.TimeOfDay <= task.Start.TimeOfDay)
+            {
+                throw new ArgumentException("Thời gian làm việc phải từ 7h sáng đến 5h chiều");
+            }
             var createdTask = await _taskRepository.AddAsync(task);
             return createdTask.ToTaskDTO();
         }
@@ -40,6 +44,10 @@ namespace Core.Services
         public async Task<TaskDTO?> UpdateTaskAsync(TaskDTO taskDto)
         {
             var task = taskDto.FromTaskDTO();
+            if (task.Start.TimeOfDay < new TimeSpan(7, 0, 0) || task.End.TimeOfDay > new TimeSpan(17, 0, 0) || task.End.TimeOfDay <= task.Start.TimeOfDay)
+            {
+                throw new ArgumentException("Thời gian làm việc phải từ 7h sáng đến 5h chiều");
+            }
             var updatedTask = await _taskRepository.UpdateAsync(task);
             return updatedTask?.ToTaskDTO();
         }
