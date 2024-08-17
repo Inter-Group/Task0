@@ -1,4 +1,5 @@
 ﻿using Core.Contract.Repository_Contract;
+using Core.DTO.Category;
 using Core.Models;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -46,9 +47,14 @@ namespace Infrastructure.Respository
             return category;
         }
 
-        public Task<Category> UpdateAsycn(Category category)
+        public async Task<Category> UpdateAsycn(int id,CategoryDTO categoryUpdateRequest)
         {
-            throw new NotImplementedException();
+           Category category = await GetByIdAsync(id);
+           category.CatgegoryName = categoryUpdateRequest.CatgegoryName;
+            await _context.SaveChangesAsync();
+            return category;
         }
+
+    
     }
 }
