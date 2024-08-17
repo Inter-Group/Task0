@@ -1,5 +1,7 @@
 ﻿using Core.Contract.Repository_Contract;
 using Core.Models;
+using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +12,38 @@ namespace Infrastructure.Respository
 {
     public class CategoryRepository : ICategogyRepository
     {
-        public Task<Category> CreatAsycn(Category category)
+        private readonly ApplicationDbContext _context;
+        public CategoryRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Category> CreatAsycn(Category category)
+        {
+            await _context.Categories.AddAsync(category);
+            await _context.SaveChangesAsync();
+            return category;
         }
 
-        public Task<Category> DeleteAsycn(int id)
+        public async Task<Category> DeleteAsycn(int id)
         {
-            throw new NotImplementedException();
+            Category category = await GetByIdAsync(id);
+            if (category == null)
+            {
+                return null;
+            }
+            _context.Categories.Remove(category);
+            return category;
         }
 
-        public Task<Category> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Categories.ToListAsync();
         }
 
-        public Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            Category? category = await _context.Categories.Include(c => c.Product).FirstOrDefaultAsync(c => c.CategoryId == id);
+            return category;
         }
 
         public Task<Category> UpdateAsycn(Category category)

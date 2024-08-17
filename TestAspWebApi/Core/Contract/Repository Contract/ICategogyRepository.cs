@@ -10,8 +10,8 @@ namespace Core.Contract.Repository_Contract
     public interface ICategogyRepository
     {
 
-        Task<Category> GetAllAsync();
-        Task<Category> GetByIdAsync(int id);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category?> GetByIdAsync(int id);
         Task<Category> CreatAsycn(Category category);
         Task<Category> UpdateAsycn(Category category);
         Task<Category> DeleteAsycn(int id);

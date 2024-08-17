@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace Core.Contract.Services_Contract
 {
     public interface ICategoryServices
     {
+        public Task<IEnumerable<Category>> GetCategories();
+
     }
 }
