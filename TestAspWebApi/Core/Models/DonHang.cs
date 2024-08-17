@@ -12,7 +12,6 @@ namespace Core.Models
         [Key]
         public int MaDonHang { get; set; }
         public int SoLuong { get; set; }
-        public int ProductId { get; set; }
         public Product? Product { get; set; }
         public IEnumerable<CongViec> CongViec { get; set; } = new List<CongViec>() { };
     }

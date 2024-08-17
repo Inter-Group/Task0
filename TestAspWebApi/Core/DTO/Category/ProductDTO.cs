@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Core.DTO.Category
 {
-    internal class ProductDTO
+    public class ProductDTO
     {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+       
     }
 }
