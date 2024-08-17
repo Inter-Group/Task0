@@ -1,10 +1,6 @@
 ﻿using Core.DTO.Product;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Core.Contract.Repository_Contract
 {
