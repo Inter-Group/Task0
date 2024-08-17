@@ -1,5 +1,5 @@
 ﻿using Core.Contract.Repository_Contract;
-using Core.DTO.Category;
+using Core.DTO.Categorydto;
 using Core.Models;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +33,7 @@ namespace Infrastructure.Respository
                 return null;
             }
             _context.Categories.Remove(category);
+            _context.SaveChanges();
             return category;
         }
 
@@ -47,7 +48,7 @@ namespace Infrastructure.Respository
             return category;
         }
 
-        public async Task<Category?> UpdateAsycn(int id,CategoryDTO categoryUpdateRequest)
+        public async Task<Category?> UpdateAsycn(int id,CategoryUpdateRequest categoryUpdateRequest)
         {
            Category category = await GetByIdAsync(id);
             if (category == null)

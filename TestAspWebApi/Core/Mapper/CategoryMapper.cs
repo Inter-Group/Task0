@@ -1,16 +1,12 @@
-﻿using Core.DTO.Category;
+﻿using Core.DTO.Categorydto;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Core.Mapper
 {
     public static class CategoryMapper
     {
-        static CategoryDTO toCategoryDTO(this Category category)
+        public static CategoryDTO toCategoryDTO(this Category category)
         {
             return new CategoryDTO
             {
@@ -19,7 +15,7 @@ namespace Core.Mapper
                 Products = category.Product.Select(p => p.toProductDTO()).ToList()
             };
         }
-        static Category CategoryFromDTO(this CategoryDTO categoryDTO)
+      public  static Category CategoryFromDTO(this CategoryDTO categoryDTO)
         {
             return new Category { CatgegoryName = categoryDTO.CatgegoryName };
         }
