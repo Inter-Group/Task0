@@ -16,8 +16,12 @@ namespace Core.Mapper
             {
                 CategoryId = category.CategoryId,
                 CatgegoryName = category.CatgegoryName,
-                Products = category.Product 
+                Products = category.Product.Select(p => p.toProductDTO()).ToList()
             };
+        }
+        static Category CategoryFromDTO(this CategoryDTO categoryDTO)
+        {
+            return new Category { CatgegoryName = categoryDTO.CatgegoryName };
         }
     }
 }

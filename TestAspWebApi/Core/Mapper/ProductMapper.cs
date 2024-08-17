@@ -1,4 +1,5 @@
 ﻿using Core.DTO.Category;
+using Core.DTO.Product;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,12 @@ namespace Core.Mapper
     {
         public static ProductDTO toProductDTO(this Product product)
         {
-            return new ProductDTO { };
+            return new ProductDTO {ProductId = product.ProductId,
+            ProductName = product.ProductName};
+        }
+        static Product ProductFromDTO(this ProductDTO productDTO)
+        {
+            return new Product {ProductName = productDTO.ProductName};
         }
     }
 }

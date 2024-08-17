@@ -1,4 +1,6 @@
 using Core.Contract.Repository_Contract;
+using Core.Contract.Services_Contract;
+using Core.Services;
 using Infrastructure.Database;
 using Infrastructure.Respository;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICategogyRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+builder.Services.AddScoped<IProductServices, ProductServices>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

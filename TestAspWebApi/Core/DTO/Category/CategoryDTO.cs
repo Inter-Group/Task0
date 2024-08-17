@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.DTO.Product;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace Core.DTO.Category
     {
         public int CategoryId { get; set; }
         public string CatgegoryName { get; set; } = string.Empty;
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductDTO> Products { get; set; }
     }
 }
