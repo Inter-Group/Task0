@@ -17,12 +17,26 @@ namespace TestAspWebApi.Controllers
 
         // GET: api/task
         [HttpGet]
-        public async Task<IActionResult> GetAllTasks()
+        public async Task<IActionResult> GetAllTasks([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var tasks = await _taskService.GetAllTasksAsync();
-                return Ok(tasks);
+                // Lấy danh sách tasks phân trang
+                var tasks = await _taskService.GetPagedTasksAsync(pageNumber, pageSize);
+
+                // Lấy tổng số lượng tasks
+                var totalTasksCount = await _taskService.GetTotalTasksCountAsync();
+
+                // Tạo response phân trang
+                var response = new
+                {
+                    TotalCount = totalTasksCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Tasks = tasks
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

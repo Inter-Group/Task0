@@ -43,6 +43,19 @@ namespace Infrastructure.Respository
             return await _context.congViecs.FindAsync(id);
         }
 
+        public async Task<IEnumerable<CongViec>> GetPagedTasksAsync(int pageNumber, int pageSize)
+        {
+            return await _context.congViecs
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalTasksCountAsync()
+        {
+            return await _context.congViecs.CountAsync();
+        }
+
         public async Task<CongViec?> UpdateAsync(CongViec congViec)
         {
             var existingTask = await _context.congViecs.FindAsync(congViec.MaCongViec);
