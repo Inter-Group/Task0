@@ -10,7 +10,5 @@ namespace Core.DTO.DonHang
 
         // danh sách các công việc
         public IEnumerable<TaskDTO> CongViec { get; set; } = new List<TaskDTO>() { };
-
-
     }
 }
