@@ -1,7 +1,4 @@
-﻿using Core.Contract.Repository_Contract;
-using Core.Models;
-using Infrastructure.Respository;
-using Microsoft.AspNetCore.Http;
+﻿using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Core.Mapper;
 using Core.Contract.Services_Contract;

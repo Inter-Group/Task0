@@ -1,28 +1,46 @@
-﻿using Core.DTO.Category;
-using Core.DTO.DonHang;
+﻿using Core.DTO.DonHang;
+using Core.DTO.Task;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Core.Mapper
 {
     public static class DonHangMapper
     {
-        static DonHangDTO toDonHangDTO(this DonHang donhang)
+        //Chuyen tu DonHang Sang DonHangDTO
+        public static DonHangDTO toDonHangDTO(this DonHang donhang)
         {
             return new DonHangDTO
             {
                 MaDonHang = donhang.MaDonHang,
                 SoLuong = donhang.SoLuong,
-                Products = donhang.Product.Select(p => p.toProductDTO()).ToList()
+                ProductName = donhang.Product?.ProductName ?? string.Empty,
+                CongViec = donhang.CongViec.Select(cv => new TaskDTO
+                {
+                    MaCongViec = cv.MaCongViec,
+                    TenCongViec = cv.TenCongViec,
+                    Start = cv.Start,
+                    End = cv.End
+                }).ToList()
             };
         }
-        static DonHang DonHangFromDTO(this DonHangDTO donhangDTO)
+        // Chuyển đổi từ DonHangDTO sang DonHang
+
+        public static DonHang DonHangFromDTO(this DonHangDTO donhangDTO)
         {
-            return new DonHang { MaDonHang = donhangDTO.MaDonHang };
+            return new DonHang
+            {
+                MaDonHang = donhangDTO.MaDonHang,
+                SoLuong = donhangDTO.SoLuong,
+                Product = string.IsNullOrWhiteSpace(donhangDTO.ProductName) ? null : new Product { ProductName = donhangDTO.ProductName },
+                CongViec = donhangDTO.CongViec.Select(cv => new CongViec
+                {
+                    MaCongViec = cv.MaCongViec,
+                    TenCongViec = cv.TenCongViec,
+                    Start = cv.Start,
+                    End = cv.End
+                }).ToList()
+            };
         }
     }
 }

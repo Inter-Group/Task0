@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.DTO.Product;
-using Core.Models;
+﻿using Core.DTO.Task;
 
 namespace Core.DTO.DonHang
 {
@@ -12,7 +6,11 @@ namespace Core.DTO.DonHang
     {
         public int MaDonHang { get; set; }
         public int SoLuong { get; set; }
-        public IEnumerable<ProductDTO> Products { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+
+        // danh sách các công việc
+        public IEnumerable<TaskDTO> CongViec { get; set; } = new List<TaskDTO>() { };
+
 
     }
 }
