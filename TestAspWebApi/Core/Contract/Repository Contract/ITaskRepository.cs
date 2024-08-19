@@ -10,6 +10,7 @@ namespace Core.Contract.Repository_Contract
         Task<CongViec> AddAsync(CongViec congViec);
         Task<CongViec?> UpdateAsync(CongViec congViec);
         Task<bool> DeleteAsync(int id);
+        Task<DonHang?> GetDonHangByIdAsync(int id);
 
         // Phân trang
         Task<IEnumerable<CongViec>> GetPagedTasksAsync(int pageNumber, int pageSize);

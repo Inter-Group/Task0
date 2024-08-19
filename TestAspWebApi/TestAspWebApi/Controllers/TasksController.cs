@@ -64,7 +64,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // POST: api/task
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateTask([FromBody] TaskDTO taskDto)
         {
             if (taskDto == null)
@@ -88,7 +88,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // PUT: api/task/{id}
-        [HttpPut("{id}")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskDTO taskDto)
         {
             if (taskDto == null || id != taskDto.MaCongViec)
@@ -117,7 +117,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // DELETE: api/task/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
             try
