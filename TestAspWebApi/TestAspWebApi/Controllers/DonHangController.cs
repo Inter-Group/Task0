@@ -50,7 +50,6 @@ namespace TestAspWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         // PUT: api/DonHang/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult<DonHangDTO?>> UpdateDonHang(int id, [FromBody] DonHangDTO donHangDto)

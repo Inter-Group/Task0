@@ -24,13 +24,6 @@ namespace Core.Services
                 throw new InvalidOperationException("Không thể tạo đơn hàng mới khi có công việc liên quan chưa hoàn thành.");
             }
 
-            // Nếu tất cả các công việc liên quan đã hoàn thành, tiếp tục tạo đơn hàng
-
-            var task = taskDto.DonHangFromDTO();
-
-            var createdTask = await _donhangRepository.AddAsync(task);
-            return createdTask.toDonHangDTO();
-        }
         public async Task<bool> DeleteTaskAsync(int id)
         {
             return await _donhangRepository.DeleteAsycn(id);
