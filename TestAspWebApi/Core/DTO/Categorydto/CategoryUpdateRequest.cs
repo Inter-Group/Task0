@@ -7,7 +7,6 @@ namespace Core.DTO.Categorydto
     public class CategoryUpdateRequest
     {
         public string CatgegoryName { get; set; } = string.Empty;
-        public IEnumerable<ProductDTO>? Products { get; set; }
     }
 
 }
