@@ -12,7 +12,7 @@ namespace Core.Mapper
             return new ProductDTO {ProductId = product.ProductId,
             ProductName = product.ProductName};
         }
-        static Product ProductFromDTO(this ProductDTO productDTO)
+        public static Product ProductFromDTO(this ProductDTO productDTO)
         {
             return new Product {ProductName = productDTO.ProductName};
         }
