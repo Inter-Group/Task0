@@ -16,6 +16,7 @@ namespace WebApi.Controllers
             _accountService = accountService;
         }
 
+        // Đăng ký người dùng
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUp signUp)
         {
@@ -28,12 +29,13 @@ namespace WebApi.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Đăng ký thành công.");
+                return Ok(new { Message = "Đăng ký thành công." });
             }
 
             return BadRequest(new { Errors = result.Errors });
         }
 
+        // Đăng nhập người dùng
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignIn signIn)
         {

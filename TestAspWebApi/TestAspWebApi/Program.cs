@@ -1,4 +1,4 @@
-using Core.Contract.Repository_Contract;
+﻿using Core.Contract.Repository_Contract;
 using Core.Contract.Services_Contract;
 using Core.Models;
 using Core.Repository;
@@ -6,6 +6,7 @@ using Core.Services;
 using Infrastructure.Database;
 using Infrastructure.Respository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +29,10 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 //Add services for Authentication
 
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"temp-keys"))// Lưu trữ khóa vào một thư mục có quyền truy cập
+    .SetApplicationName("TestAspWebApi"); 
+
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddAuthentication(option => {
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,12 +45,13 @@ builder.Services.AddAuthentication(option => {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
-        ValidIssuer = builder.Configuration["JWT:ValidIssuer "],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
 
-// ??ng k� d?ch v? cho DonHang
+
+// ??ng ký d?ch v? cho DonHang
 builder.Services.AddScoped<IDonHangRepository, DonHangRepository>(); // ??m b?o DonHangRepository tri?n khai IDonHangRepository
 builder.Services.AddScoped<IDonHangServices, DonHangServices>(); // ??m b?o DonHangServices tri?n khai IDonHangServices
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
