@@ -7,29 +7,46 @@ namespace Core.Services
 {
     public class ProductServices : IProductServices
     {
-        public Task<bool> CreateProduct(Product product)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly List<Product> _products = new List<Product>();
 
-        public Task<bool> DeleteProduct(int id)
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_products);
         }
-
-        public Task<IEnumerable<Product>> GetAllProducts()
+        
+        public async Task<Product?> GetProductById(int id)
         {
-            throw new NotImplementedException();
+            var product = _products.FirstOrDefault(p => p.ProductId == id);
+            return await Task.FromResult(product);
         }
-
-        public Task<Product?> GetProductById(int id)
+        
+        public async Task<bool> CreateProduct(Product product)
         {
-            throw new NotImplementedException();
+            _products.Add(product);
+            return await Task.FromResult(true);
         }
-
-        public Task<bool> UpdateProduct(int id, Product productUpdaterequest)
+        
+        public async Task<bool> UpdateProduct(int id, Product productUpdateRequest)
         {
-            throw new NotImplementedException();
+            var existingProduct = _products.FirstOrDefault(p => p.ProductId == id);
+            if (existingProduct != null)
+            {
+                _products.Remove(existingProduct);
+                _products.Add(productUpdateRequest);
+                return await Task.FromResult(true);
+            }
+            return await Task.FromResult(false);
+        }
+        
+        public async Task<bool> DeleteProduct(int id)
+        {
+            var product = _products.FirstOrDefault(p => p.ProductId == id);
+            if (product != null)
+            {
+                _products.Remove(product);
+                return await Task.FromResult(true);
+            }
+            return await Task.FromResult(false);
         }
     }
 }

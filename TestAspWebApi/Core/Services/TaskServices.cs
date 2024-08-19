@@ -2,6 +2,7 @@
 using Core.Contract.Services_Contract;
 using Core.DTO.Task;
 using Core.Mapper;
+using Core.Models;
 
 namespace Core.Services
 {
@@ -41,6 +42,11 @@ namespace Core.Services
             return task?.ToTaskDTO();
         }
 
+        public async Task<int> GetTotalTasksCountAsync()
+        {
+            return await _taskRepository.GetTotalTasksCountAsync();
+        }
+
         public async Task<TaskDTO?> UpdateTaskAsync(TaskDTO taskDto)
         {
             var task = taskDto.FromTaskDTO();
@@ -50,6 +56,11 @@ namespace Core.Services
             }
             var updatedTask = await _taskRepository.UpdateAsync(task);
             return updatedTask?.ToTaskDTO();
+        }
+        public async Task<IEnumerable<TaskDTO>> GetPagedTasksAsync(int pageNumber, int pageSize)
+        {
+            var tasks = await _taskRepository.GetPagedTasksAsync(pageNumber, pageSize);
+            return tasks.Select(task => task.ToTaskDTO());
         }
     }
 }
