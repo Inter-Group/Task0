@@ -1,7 +1,7 @@
 ﻿using Core.Contract.Repository_Contract;
 using Core.Contract.Services_Contract;
-using Core.DTO.DonHang;
-using Core.Mapper;
+using Core.DTO.DonHangdto;
+using Core.Models;
 
 namespace Core.Services
 {
@@ -14,15 +14,15 @@ namespace Core.Services
             _donhangRepository = donhangRepository;
 
         }
-        public async Task<DonHangDTO> CreateTaskAsync(DonHangDTO taskDto)
+        public async Task<bool> CreateTaskAsync(DonHang donHang)
         {
-            // Kiểm tra nếu bất kỳ công việc nào của đơn hàng chưa kết thúc
-            bool hasUnfinishedTasks = taskDto.CongViec.Any(task => task.End > DateTime.Now);
-
-            if (hasUnfinishedTasks)
+            DonHang donhangTemp = await _donhangRepository.AddAsync(donHang);
+            if (donhangTemp == null)
             {
-                throw new InvalidOperationException("Không thể tạo đơn hàng mới khi có công việc liên quan chưa hoàn thành.");
+                return false;
             }
+            return true;
+        }
 
         public async Task<bool> DeleteTaskAsync(int id)
         {
@@ -31,22 +31,36 @@ namespace Core.Services
 
         public async Task<IEnumerable<DonHangDTO>> GetAllTasksAsync()
         {
-            var tasks = await _donhangRepository.GetAllAsync();
-            return tasks.Select(task => task.toDonHangDTO());
+            var donHangs = await _donhangRepository.GetAllAsync();
+            return donHangs.Select(dh => new DonHangDTO
+            {
+                MaDonHang = dh.MaDonHang,
+                SoLuong = dh.SoLuong,
+                ProductID = dh.Product?.ProductId ?? 0
+            });
         }
 
         public async Task<DonHangDTO?> GetTaskByIdAsync(int id)
         {
-            var task = await _donhangRepository.GetByIdAsync(id);
-            return task?.toDonHangDTO();
+            var donHang = await _donhangRepository.GetByIdAsync(id);
+            if (donHang == null) return null;
+
+            return new DonHangDTO
+            {
+                MaDonHang = donHang.MaDonHang,
+                SoLuong = donHang.SoLuong,
+                ProductID = donHang.Product?.ProductId ?? 0
+            };
         }
 
-        public async Task<DonHangDTO?> UpdateTaskAsync(DonHangDTO taskDto)
+        public async Task<bool> UpdateTaskAsync(int MaDonHang, DonHangUpdateRequest donhangUpdaterequest)
         {
-            var task = taskDto.DonHangFromDTO();
-
-            var updatedTask = await _donhangRepository.UpdateAsycn(task);
-            return updatedTask?.toDonHangDTO();
+            DonHang? donHang = await _donhangRepository.UpdateAsycn(MaDonHang, donhangUpdaterequest);
+            if (donHang == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Core.Contract.Services_Contract;
-using Core.DTO.DonHang;
+using Core.DTO.Categorydto;
+using Core.DTO.DonHangdto;
+using Core.Mapper;
+using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestAspWebApi.Controllers
@@ -9,10 +12,13 @@ namespace TestAspWebApi.Controllers
     public class DonHangController : ControllerBase
     {
         private readonly IDonHangServices _donHangServices;
+        private readonly IProductServices _productServices;
 
-        public DonHangController(IDonHangServices donHangServices)
+
+        public DonHangController(IDonHangServices donHangServices, IProductServices productServices)
         {
             _donHangServices = donHangServices;
+            _productServices = productServices;
         }
 
         // GET: api/DonHang
@@ -36,36 +42,31 @@ namespace TestAspWebApi.Controllers
         }
 
         // POST: api/DonHang
-        [HttpPost]
-        public async Task<ActionResult<DonHangDTO>> CreateDonHang([FromBody] DonHangDTO donHangDto)
+        [HttpPost("[Action]")]
+        public async Task<IActionResult> Create([FromQuery] DonHangAddRequest donhangCreateRequest)
         {
-            try
+            bool isAdded = await _donHangServices.CreateTaskAsync(donhangCreateRequest.AddrequestToDonHang());
+            if (!isAdded)
             {
-                var createdDonHang = await _donHangServices.CreateTaskAsync(donHangDto);
-                return CreatedAtAction(nameof(GetDonHangById), new { id = createdDonHang.MaDonHang }, createdDonHang);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // If an unfinished task exists, return a bad request with a meaningful message.
-                return BadRequest(ex.Message);
-            }
-        }
-        // PUT: api/DonHang/{id}
-        [HttpPut("{id}")]
-        public async Task<ActionResult<DonHangDTO?>> UpdateDonHang(int id, [FromBody] DonHangDTO donHangDto)
-        {
-            if (id != donHangDto.MaDonHang)
-            {
-                return BadRequest("ID mismatch.");
+                return BadRequest();
             }
 
-            var updatedDonHang = await _donHangServices.UpdateTaskAsync(donHangDto);
-            if (updatedDonHang == null)
-            {
-                return NotFound();
-            }
-            return Ok(updatedDonHang);
+            return Ok();
         }
+        // PUT: api/DonHang/{id}
+        [HttpPost("[Action]")]
+        public async Task<IActionResult> UpdateDonHang([FromQuery] DonHangUpdateRequest donhangUpdateRequest, [FromQuery] int MaDonHang)
+        {
+            bool isUpdated = await _donHangServices.UpdateTaskAsync(MaDonHang, donhangUpdateRequest);
+            if (!isUpdated)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+
 
         // DELETE: api/DonHang/{id}
         [HttpDelete("{id}")]
