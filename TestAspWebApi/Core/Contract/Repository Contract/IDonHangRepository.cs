@@ -1,6 +1,6 @@
 
 ﻿using System;
-
+using Core.DTO.DonHangdto;
 using Core.Models;
 
 namespace Core.Contract.Repository_Contract
@@ -9,8 +9,10 @@ namespace Core.Contract.Repository_Contract
     {
         Task<IEnumerable<DonHang>> GetAllAsync();
         Task<DonHang?> GetByIdAsync(int id);
-        Task<DonHang?> UpdateAsycn(DonHang donhang);
+        Task<DonHang?> UpdateAsycn(int v, DonHangUpdateRequest donhangUpdateRequest);
+
         Task<DonHang> AddAsync(DonHang donhang);
+
         Task<bool> DeleteAsycn(int id);
 
 

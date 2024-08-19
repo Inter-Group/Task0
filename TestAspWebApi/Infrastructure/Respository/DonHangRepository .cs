@@ -18,7 +18,7 @@ namespace Core.Repository
 
         public async Task<DonHang> AddAsync(DonHang donHang)
         {
-            _context.DonHangs.Add(donHang);
+            await _context.DonHangs.AddAsync(donHang);
             await _context.SaveChangesAsync();
             return donHang;
         }
@@ -40,7 +40,7 @@ namespace Core.Repository
         {
             return await _context.DonHangs
                 .Include(d => d.Product)
-                .Include(d => d.CongViec)
+                //.Include(d => d.CongViec)
                 .FirstOrDefaultAsync(d => d.MaDonHang == id);
         }
 
@@ -52,17 +52,19 @@ namespace Core.Repository
                 .ToListAsync();
         }
 
-        public async Task<DonHang?> UpdateAsycn(DonHang donHang)
+        
+
+        public async Task<DonHang?> UpdateAsycn(int MaDonHang, DonHangUpdateRequest donhangUpdateRequest)
         {
-            var existingDonHang = await _context.DonHangs.FindAsync(donHang.MaDonHang);
-            if (existingDonHang == null)
+            DonHang donHang = await GetByIdAsync(MaDonHang);
+            if (donHang == null)
             {
                 return null;
             }
-
-            _context.Entry(existingDonHang).CurrentValues.SetValues(donHang);
+            donHang.SoLuong = donhangUpdateRequest.SoLuong;
+            donHang.ProductId = donhangUpdateRequest.ProductID;
             await _context.SaveChangesAsync();
-            return existingDonHang;
+            return donHang;
         }
     }
 }

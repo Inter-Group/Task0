@@ -1,14 +1,17 @@
 using Core.Models;
-using Core.DTO.DonHang;
+using Core.DTO.DonHangdto;
+using Core.DTO.Categorydto;
 
 namespace Core.Contract.Services_Contract
 {
     public interface IDonHangServices
     {
-        Task<IEnumerable<DonHangDTO>> GetAllTasksAsync();
-        Task<DonHangDTO?> GetTaskByIdAsync(int id);
-        Task<DonHangDTO> CreateTaskAsync(DonHangDTO taskDto);
-        Task<DonHangDTO?> UpdateTaskAsync(DonHangDTO taskDto);
-        Task<bool> DeleteTaskAsync(int id);
+        public Task<IEnumerable<DonHangDTO>> GetAllTasksAsync();
+        public Task<DonHangDTO?> GetTaskByIdAsync(int id);
+        public Task<bool> CreateTaskAsync(DonHang donHang);
+
+        public Task<bool> UpdateTaskAsync(int MaDonHang, DonHangUpdateRequest donhangUpdaterequest);
+
+        public Task<bool> DeleteTaskAsync(int id);
     }
 }

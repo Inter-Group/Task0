@@ -1,4 +1,4 @@
-﻿using Core.DTO.DonHang;
+﻿using Core.DTO.DonHangdto;
 using Core.DTO.Task;
 using Core.Models;
 
@@ -8,38 +8,34 @@ namespace Core.Mapper
     public static class DonHangMapper
     {
         //Chuyen tu DonHang Sang DonHangDTO
-        public static DonHangDTO toDonHangDTO(this DonHang donhang)
+        public static DonHangDTO ToDonHangDTO(this DonHang donHang)
         {
             return new DonHangDTO
             {
-                MaDonHang = donhang.MaDonHang,
-                SoLuong = donhang.SoLuong,
-                ProductName = donhang.Product?.ProductName ?? string.Empty,
-                CongViec = donhang.CongViec.Select(cv => new TaskDTO
-                {
-                    MaCongViec = cv.MaCongViec,
-                    TenCongViec = cv.TenCongViec,
-                    Start = cv.Start,
-                    End = cv.End
-                }).ToList()
+                MaDonHang = donHang.MaDonHang,
+                SoLuong = donHang.SoLuong,
+                ProductID = donHang.Product?.ProductId ?? 0, // Giả sử ProductID là thuộc tính của Product
+                //CongViec = donHang.CongViec?.Select(c => new TaskDTO
+                //{
+                //    MaCongViec = c.MaCongViec // Chỉ lấy mã công việc
+                //}) ?? new List<TaskDTO>()
             };
         }
         // Chuyển đổi từ DonHangDTO sang DonHang
 
-        public static DonHang DonHangFromDTO(this DonHangDTO donhangDTO)
+        public static DonHang DonHangFromDTO(this DonHangDTO donHangDTO)
         {
             return new DonHang
             {
-                MaDonHang = donhangDTO.MaDonHang,
-                SoLuong = donhangDTO.SoLuong,
-                Product = string.IsNullOrWhiteSpace(donhangDTO.ProductName) ? null : new Product { ProductName = donhangDTO.ProductName },
-                CongViec = donhangDTO.CongViec.Select(cv => new CongViec
-                {
-                    MaCongViec = cv.MaCongViec,
-                    TenCongViec = cv.TenCongViec,
-                    Start = cv.Start,
-                    End = cv.End
-                }).ToList()
+                MaDonHang = donHangDTO.MaDonHang,
+                SoLuong = donHangDTO.SoLuong,
+                ProductId = donHangDTO.ProductID ,
+                // Khởi tạo Product nếu cần, giả sử có ProductID trong DonHangDTO
+                //Product = new Product { ProductId = donHangDTO.ProductID ?? 0 } // Hoặc sử dụng ProductID nếu không cần đối tượng Product
+                //CongViec = donHangDTO.CongViec?.Select(t => new CongViec
+                //{
+                //    MaCongViec = t.MaCongViec // Khởi tạo công việc với mã công việc
+                //}) ?? new List<CongViec>()
             };
         }
     }
