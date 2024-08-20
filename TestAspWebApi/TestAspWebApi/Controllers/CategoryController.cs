@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Core.Mapper;
 using Core.Contract.Services_Contract;
 using Core.DTO.Categorydto;
+using Core.Services;
 namespace TestAspWebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -18,15 +19,32 @@ namespace TestAspWebApi.Controllers
             _productServices = pro;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllCategory()
+        public async Task<IActionResult> GetAllCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1)
         {
-            IEnumerable<Category> cates = await _categoryServices.GetAllCategories();
-            if(cates == null)
+         
+            try
             {
-                return NotFound();
-            }
+                // Lấy danh sách category phân trang
+                var cates = await _categoryServices.GetPagedCategoryAsync(pageNumber, pageSize);
 
-            return Ok(cates.Select(c => c.toCategoryDTO()));
+                // Lấy tổng số lượng Category
+                var totalCatesCount = await _categoryServices.GetTotalCategoriesCountAsync();
+
+                // Tạo response phân trang
+                var response = new
+                {
+                    TotalCount = totalCatesCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Cates = cates
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("[Action]")]
         public async Task<IActionResult> GetById([FromQuery] int Id)
@@ -50,7 +68,7 @@ namespace TestAspWebApi.Controllers
             return Ok();
         }
 
-        [HttpPost("[Action]")]
+        [HttpPut("[Action]")]
         public async Task<IActionResult> Updated([FromQuery] CategoryUpdateRequest categoryUpdateRequest, [FromQuery] int id)
         {
             bool isUpdated = await _categoryServices.UpdateCategory(id,categoryUpdateRequest);
@@ -61,7 +79,7 @@ namespace TestAspWebApi.Controllers
 
             return Ok();
         }
-        [HttpPost("[Action]")]
+        [HttpDelete("[Action]")]
         public async Task<IActionResult> Deleted([FromQuery] int id)
         {
             bool isDeleted = await _categoryServices.DeleteCategory(id);

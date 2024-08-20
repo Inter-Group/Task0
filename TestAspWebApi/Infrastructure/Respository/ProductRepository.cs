@@ -29,6 +29,7 @@ namespace Infrastructure.Respository
                 return null;
             }
             _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
             return product;
         }
 
@@ -52,8 +53,22 @@ namespace Infrastructure.Respository
                 return null;
             }
             product.ProductName = productUpdateRequest.ProductName;
+            product.CategoryId = productUpdateRequest.CategoryId;
             await _context.SaveChangesAsync();
             return product;
+        }
+        public async Task<IEnumerable<Product>> GetPagedProductsAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Products
+                .Include(c => c.DonHang)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalProductsCountAsync()
+        {
+            return await _context.Products.CountAsync();
         }
     }
 }

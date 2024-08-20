@@ -2,6 +2,8 @@
 ﻿using Core.Contract.Repository_Contract;
 using Core.DTO.Categorydto;
 using Core.Models;
+using Core.DTO.Task;
+using Core.Mapper;
 
 
 namespace Core.Services
@@ -54,5 +56,18 @@ namespace Core.Services
             }
             return true;
         }
+        public async Task<int> GetTotalCategoriesCountAsync()
+        {
+            return await _categogyRepository.GetTotalCategoriesCountAsync();
+        }
+        public async Task<IEnumerable<CategoryDTO>> GetPagedCategoryAsync(int pageNumber, int pageSize)
+        {
+            var categories = await _categogyRepository.GetPagedCategoryAsync(pageNumber, pageSize);
+            return categories.Select(c=> c.toCategoryDTO());
+        }
+
+       
+
+     
     }
 }
