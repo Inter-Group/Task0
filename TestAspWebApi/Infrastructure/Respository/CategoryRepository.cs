@@ -45,6 +45,8 @@ namespace Infrastructure.Respository
         public async Task<Category?> GetByIdAsync(int id)
         {
             Category? category = await _context.Categories.Include(c => c.Product).FirstOrDefaultAsync(c => c.CategoryId == id);
+
+           
             return category;
         }
 
