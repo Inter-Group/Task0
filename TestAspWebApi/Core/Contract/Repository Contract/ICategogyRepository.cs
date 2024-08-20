@@ -12,5 +12,10 @@ namespace Core.Contract.Repository_Contract
         Task<Category> CreatAsycn(Category category);
         Task<Category?> UpdateAsycn(int id, CategoryUpdateRequest categoryUpdateRequest);
         Task<Category?> DeleteAsycn(int id);
+        // Phân trang
+        Task<IEnumerable<Category>> GetPagedCategoryAsync(int pageNumber, int pageSize);
+
+        // Lấy tổng số task 
+        Task<int> GetTotalCategoriesCountAsync();
     }
 }
