@@ -32,12 +32,18 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"temp-keys"))// Lưu trữ khóa vào một thư mục có quyền truy cập
     .SetApplicationName("TestAspWebApi"); 
+//
+builder.Services.AddIdentity<AppUser, IdentityRole>(option =>
+{
+    option.Password.RequireUppercase = true;
+}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+//
 builder.Services.AddAuthentication(option => {
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+   
 }).AddJwtBearer(option => {
     option.SaveToken = true;
     option.RequireHttpsMetadata = false;
@@ -76,6 +82,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
