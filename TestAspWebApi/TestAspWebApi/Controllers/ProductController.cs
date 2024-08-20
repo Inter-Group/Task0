@@ -1,4 +1,4 @@
-﻿using Core.DTO.Productdto;
+using Core.DTO.Productdto;
 using Core.Mapper;
 using Core.Models;
 using Core.Contract.Services_Contract;
@@ -41,7 +41,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // Tạo mới một sản phẩm
-        [HttpPost]
+        [HttpPost("{Create}")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductDTO productDTO)
         {
             var product = productDTO.ProductFromDTO();
@@ -56,7 +56,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // Cập nhật thông tin sản phẩm
-        [HttpPut("{id}")]
+        [HttpPut("[Action]")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO productDTO)
         {
             var product = productDTO.ProductFromDTO();
@@ -71,7 +71,7 @@ namespace TestAspWebApi.Controllers
         }
 
         // Xóa một sản phẩm
-        [HttpDelete("{id}")]
+        [HttpDelete("[Action]")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             bool result = await _productServices.DeleteProduct(id);
