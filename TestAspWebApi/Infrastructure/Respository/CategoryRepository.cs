@@ -48,6 +48,8 @@ namespace Infrastructure.Respository
             return category;
         }
 
+       
+
         public async Task<Category?> UpdateAsycn(int id,CategoryUpdateRequest categoryUpdateRequest)
         {
            Category category = await GetByIdAsync(id);
@@ -60,6 +62,20 @@ namespace Infrastructure.Respository
             return category;
         }
 
-    
+         public async Task<IEnumerable<Category>> GetPagedCategoryAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Categories
+                .Include(c => c.Product)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalCategoriesCountAsync()
+        {
+            return await _context.Categories.CountAsync();
+        }
+
+      
     }
 }

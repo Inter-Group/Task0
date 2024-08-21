@@ -3,11 +3,13 @@ using Core.DTO.Categorydto;
 using Core.DTO.DonHangdto;
 using Core.Mapper;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestAspWebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "XuongTruong,Admin")]
     [ApiController]
     public class DonHangController : ControllerBase
     {

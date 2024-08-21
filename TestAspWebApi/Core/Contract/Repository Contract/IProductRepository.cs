@@ -13,5 +13,7 @@ namespace Core.Contract.Repository_Contract
         Task<Product?> DeleteAsycn(int id);
         Task<Product?> GetProductByIdAsync(int id);
 
+        Task<IEnumerable<Product>> GetPagedProductsAsync(int pageNumber, int pageSize);
+        Task<int> GetTotalProductsCountAsync();
     }
 }

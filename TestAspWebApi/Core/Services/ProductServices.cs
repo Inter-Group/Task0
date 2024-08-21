@@ -1,4 +1,8 @@
-﻿using Core.Contract.Services_Contract;
+﻿using Core.Contract.Repository_Contract;
+using Core.Contract.Services_Contract;
+using Core.DTO.Productdto;
+using Core.DTO.Task;
+using Core.Mapper;
 using Core.Models;
 
 
@@ -7,46 +11,59 @@ namespace Core.Services
 {
     public class ProductServices : IProductServices
     {
-        private readonly List<Product> _products = new List<Product>();
+        private readonly IProductRepository _repository;
+        public ProductServices(IProductRepository productRepository)
+        {
+            _repository = productRepository;
+        }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            return await Task.FromResult(_products);
+            return await _repository.GetAllAsync();
         }
         
         public async Task<Product?> GetProductById(int id)
         {
-            var product = _products.FirstOrDefault(p => p.ProductId == id);
-            return await Task.FromResult(product);
+            Product? product = await _repository.GetByIdAsync(id);
+            return product;
         }
         
         public async Task<bool> CreateProduct(Product product)
         {
-            _products.Add(product);
-            return await Task.FromResult(true);
+            Product pro = await _repository.CreatAsycn(product);
+            return true;
         }
         
-        public async Task<bool> UpdateProduct(int id, Product productUpdateRequest)
+        public async Task<bool> UpdateProduct(int id, ProductDTO productUpdateRequest)
         {
-            var existingProduct = _products.FirstOrDefault(p => p.ProductId == id);
+            Product? existingProduct = await _repository.GetByIdAsync(id);
             if (existingProduct != null)
             {
-                _products.Remove(existingProduct);
-                _products.Add(productUpdateRequest);
-                return await Task.FromResult(true);
+                await _repository.UpdateAsycn(id, productUpdateRequest);
+                return true;
             }
-            return await Task.FromResult(false);
+            return false;
         }
         
         public async Task<bool> DeleteProduct(int id)
         {
-            var product = _products.FirstOrDefault(p => p.ProductId == id);
+            Product? product = await _repository.DeleteAsycn(id);
             if (product != null)
             {
-                _products.Remove(product);
-                return await Task.FromResult(true);
+
+                return true;
             }
-            return await Task.FromResult(false);
+            return false;
+        }
+        public async Task<int> GetTotalProductsCountAsync()
+        {
+            return await _repository.GetTotalProductsCountAsync();
+        }
+        public async Task<IEnumerable<ProductDTO>> GetPagedProductsAsync(int pageNumber, int pageSize)
+        {
+            var products = await _repository.GetPagedProductsAsync(pageNumber, pageSize);
+            return products.Select(products => products.toProductDTO());
         }
     }
 }
+
