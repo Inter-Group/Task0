@@ -18,8 +18,9 @@ namespace Core.Repository
 
         public async Task<DonHang> AddAsync(DonHang donHang)
         {
+            // Đảm bảo rằng ProductId đã được thiết lập
             await _context.DonHangs.AddAsync(donHang);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); // Lưu thay đổi vào cơ sở dữ liệu
             return donHang;
         }
 
@@ -52,8 +53,8 @@ namespace Core.Repository
                 .ToListAsync();
         }
 
-        
 
+        
         public async Task<DonHang?> UpdateAsycn(int MaDonHang, DonHangUpdateRequest donhangUpdateRequest)
         {
             DonHang donHang = await GetByIdAsync(MaDonHang);
@@ -62,9 +63,31 @@ namespace Core.Repository
                 return null;
             }
             donHang.SoLuong = donhangUpdateRequest.SoLuong;
-            donHang.ProductId = donhangUpdateRequest.ProductID;
+            donHang.ProductId = donhangUpdateRequest.ProductId;
             await _context.SaveChangesAsync();
             return donHang;
         }
+        
+
+        public async Task<IEnumerable<DonHang>> GetPagedDonHangAsync(int pageNumber, int pageSize)
+        {
+            return await _context.DonHangs
+                .Include(c => c.Product)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalDonHangCountAsync()
+        {
+            return await _context.DonHangs.CountAsync();
+        }
+
+        public async Task<Product?> GetProductByIdAsync(int id)
+        {
+            return await _context.Products
+            .FirstOrDefaultAsync(d => d.ProductId == id);
+        }
+
     }
 }

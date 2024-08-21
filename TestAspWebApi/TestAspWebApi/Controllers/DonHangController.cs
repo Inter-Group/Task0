@@ -25,10 +25,31 @@ namespace TestAspWebApi.Controllers
 
         // GET: api/DonHang
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DonHangDTO>>> GetAllDonHangs()
+        public async Task<ActionResult<IEnumerable<DonHangDTO>>> GetAllDonHangs([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var donHangs = await _donHangServices.GetAllTasksAsync();
-            return Ok(donHangs);
+            try
+            {
+                // Lấy danh sách tasks phân trang
+                var tasks = await _donHangServices.GetPagedDonHangAsync(pageNumber, pageSize);
+
+                // Lấy tổng số lượng tasks
+                var totalTasksCount = await _donHangServices.GetTotalDonHangCountAsync();
+
+                // Tạo response phân trang
+                var response = new
+                {
+                    TotalCount = totalTasksCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Tasks = tasks
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/DonHang/{id}

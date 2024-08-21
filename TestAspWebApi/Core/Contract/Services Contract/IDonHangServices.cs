@@ -1,6 +1,5 @@
 using Core.Models;
 using Core.DTO.DonHangdto;
-using Core.DTO.Categorydto;
 
 namespace Core.Contract.Services_Contract
 {
@@ -13,5 +12,10 @@ namespace Core.Contract.Services_Contract
         public Task<bool> UpdateTaskAsync(int MaDonHang, DonHangUpdateRequest donhangUpdaterequest);
 
         public Task<bool> DeleteTaskAsync(int id);
+        // Phân trang
+        Task<IEnumerable<DonHangDTO>> GetPagedDonHangAsync(int pageNumber, int pageSize);
+
+        // T?ng s? Task
+        Task<int> GetTotalDonHangCountAsync();
     }
 }

@@ -1,5 +1,3 @@
-
-﻿using System;
 using Core.DTO.DonHangdto;
 using Core.Models;
 
@@ -15,6 +13,12 @@ namespace Core.Contract.Repository_Contract
 
         Task<bool> DeleteAsycn(int id);
 
+        Task<Product?> GetProductByIdAsync(int id);
 
+        // Phân trang
+        Task<IEnumerable<DonHang>> GetPagedDonHangAsync(int pageNumber, int pageSize);
+
+        // Lấy tổng số task 
+        Task<int> GetTotalDonHangCountAsync();
     }
 }
