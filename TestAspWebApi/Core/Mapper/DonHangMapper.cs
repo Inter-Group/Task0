@@ -14,11 +14,8 @@ namespace Core.Mapper
             {
                 MaDonHang = donHang.MaDonHang,
                 SoLuong = donHang.SoLuong,
-                ProductID = donHang.Product?.ProductId ?? 0, // Giả sử ProductID là thuộc tính của Product
-                //CongViec = donHang.CongViec?.Select(c => new TaskDTO
-                //{
-                //    MaCongViec = c.MaCongViec // Chỉ lấy mã công việc
-                //}) ?? new List<TaskDTO>()
+                ProductId = donHang.ProductId, // Thiết lập trực tiếp ProductId
+
             };
         }
         // Chuyển đổi từ DonHangDTO sang DonHang
@@ -29,13 +26,7 @@ namespace Core.Mapper
             {
                 MaDonHang = donHangDTO.MaDonHang,
                 SoLuong = donHangDTO.SoLuong,
-                ProductId = donHangDTO.ProductID ,
-                // Khởi tạo Product nếu cần, giả sử có ProductID trong DonHangDTO
-                //Product = new Product { ProductId = donHangDTO.ProductID ?? 0 } // Hoặc sử dụng ProductID nếu không cần đối tượng Product
-                //CongViec = donHangDTO.CongViec?.Select(t => new CongViec
-                //{
-                //    MaCongViec = t.MaCongViec // Khởi tạo công việc với mã công việc
-                //}) ?? new List<CongViec>()
+                ProductId = donHangDTO.ProductId // Thiết lập trực tiếp ProductId
             };
         }
     }

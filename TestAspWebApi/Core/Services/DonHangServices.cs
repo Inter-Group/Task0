@@ -1,6 +1,8 @@
 ﻿using Core.Contract.Repository_Contract;
 using Core.Contract.Services_Contract;
 using Core.DTO.DonHangdto;
+using Core.DTO.Task;
+using Core.Mapper;
 using Core.Models;
 
 namespace Core.Services
@@ -8,14 +10,28 @@ namespace Core.Services
     public class DonHangServices : IDonHangServices
     {
         private readonly IDonHangRepository _donhangRepository;
-
-        public DonHangServices(IDonHangRepository donhangRepository)
+        private readonly IProductRepository _ProductRepository;
+        public DonHangServices(IDonHangRepository donhangRepository, IProductRepository _productRepository)
         {
             _donhangRepository = donhangRepository;
-
+            _ProductRepository = _productRepository;
         }
         public async Task<bool> CreateTaskAsync(DonHang donHang)
         {
+            // Kiểm tra xem donHang có phải là null không
+            if (donHang == null)
+            {
+                throw new ArgumentNullException(nameof(donHang), "Đơn hàng không được null.");
+            }
+
+            // Kiểm tra xem ProductId có tồn tại trong bảng Products hay không
+            var existingProduct = await _ProductRepository.GetProductByIdAsync(donHang.ProductId);
+            if (existingProduct == null)
+            {
+                throw new ArgumentException("Mã sản phẩm không hợp lệ");
+            }
+
+            // Nếu sản phẩm hợp lệ, tiếp tục thêm đơn hàng
             DonHang donhangTemp = await _donhangRepository.AddAsync(donHang);
             if (donhangTemp == null)
             {
@@ -23,6 +39,8 @@ namespace Core.Services
             }
             return true;
         }
+
+
 
         public async Task<bool> DeleteTaskAsync(int id)
         {
@@ -36,7 +54,7 @@ namespace Core.Services
             {
                 MaDonHang = dh.MaDonHang,
                 SoLuong = dh.SoLuong,
-                ProductID = dh.Product?.ProductId ?? 0
+                ProductId = dh.Product?.ProductId ?? 0
             });
         }
 
@@ -49,7 +67,7 @@ namespace Core.Services
             {
                 MaDonHang = donHang.MaDonHang,
                 SoLuong = donHang.SoLuong,
-                ProductID = donHang.Product?.ProductId ?? 0
+                ProductId = donHang.Product?.ProductId ?? 0
             };
         }
 
@@ -61,6 +79,15 @@ namespace Core.Services
                 return false;
             }
             return true;
+        }
+        public async Task<IEnumerable<DonHangDTO>> GetPagedDonHangAsync(int pageNumber, int pageSize)
+        {
+            var donhang = await _donhangRepository.GetPagedDonHangAsync(pageNumber, pageSize);
+            return donhang.Select(donhang => donhang.ToDonHangDTO()) ;
+        }
+        public async Task<int> GetTotalDonHangCountAsync()
+        {
+            return await _donhangRepository.GetTotalDonHangCountAsync();
         }
     }
 }

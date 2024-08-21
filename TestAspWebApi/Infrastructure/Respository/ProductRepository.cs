@@ -55,5 +55,10 @@ namespace Infrastructure.Respository
             await _context.SaveChangesAsync();
             return product;
         }
+        public async Task<Product?> GetProductByIdAsync(int id)
+        {
+            return await _context.Products
+            .FirstOrDefaultAsync(d => d.ProductId == id);
+        }
     }
 }
