@@ -1,11 +1,13 @@
 ﻿using Core.Contract.Services_Contract;
 using Core.DTO.Task;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestAspWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "XuongTruong,Admin")]
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _taskService;

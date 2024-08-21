@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestAspWebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class ProductController : ControllerBase
     {
