@@ -28,13 +28,13 @@ namespace Core.Services
             return product;
         }
         
-        public async Task<bool> CreateProduct(Product product)
+        public async Task<bool> CreateProduct(ProductAddRequest product)
         {
-            Product pro = await _repository.CreatAsycn(product);
+            Product pro = await _repository.CreatAsycn(product.ProductFromAddRequest());
             return true;
         }
         
-        public async Task<bool> UpdateProduct(int id, ProductDTO productUpdateRequest)
+        public async Task<bool> UpdateProduct(int id, ProductUpdateRequest productUpdateRequest)
         {
             Product? existingProduct = await _repository.GetByIdAsync(id);
             if (existingProduct != null)

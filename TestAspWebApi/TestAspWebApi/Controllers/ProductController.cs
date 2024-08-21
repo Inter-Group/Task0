@@ -65,26 +65,26 @@ namespace TestAspWebApi.Controllers
         }
 
         // Tạo mới một sản phẩm
-        [HttpPost("{Create}")]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductDTO productDTO)
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody] ProductAddRequest productAddrequest)
         {
-            var product = productDTO.ProductFromDTO();
-            bool result = await _productServices.CreateProduct(product);
+           
+            bool result = await _productServices.CreateProduct(productAddrequest);
 
             if (!result)
             {
                 return BadRequest();
             }
 
-            return Ok(product.toProductDTO());
+            return Ok(productAddrequest.ProductFromAddRequest());
         }
 
         // Cập nhật thông tin sản phẩm
-        [HttpPut("[Action]")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO productDTO)
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateRequest productUpdate)
         {
            
-            bool result = await _productServices.UpdateProduct(id, productDTO);
+            bool result = await _productServices.UpdateProduct(id, productUpdate);
 
             if (!result)
             {
