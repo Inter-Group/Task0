@@ -63,19 +63,25 @@ namespace Infrastructure.Respository
 
         public async Task<IdentityResult> SignUpAsync(SignUp sign)
         {
+            // Manual validation
+            if (sign.Password != sign.ConfirmPassword)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "Mật khẩu không trùng khớp."
+                });
+            }
+
             var user = new AppUser
             {
-                FirstName = sign.FirstName, 
+                FirstName = sign.FirstName,
                 LastName = sign.LastName,
                 Email = sign.Email,
                 UserName = sign.Email
             };
-            IdentityResult isAdded = await _userManager.CreateAsync(user, sign.Password);
-            if (isAdded.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(user, "User");
-            }
-            return isAdded;
+
+            return await _userManager.CreateAsync(user, sign.Password);
         }
+
     }
 }

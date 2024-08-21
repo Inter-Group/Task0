@@ -91,9 +91,9 @@ namespace TestAspWebApi.Controllers
 
         // PUT: api/task/{id}
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskDTO taskDto)
+        public async Task<IActionResult> UpdateTask([FromBody] TaskDTO taskDto)
         {
-            if (taskDto == null || id != taskDto.MaCongViec)
+            if (taskDto == null)
             {
                 return BadRequest("Không tìm thấy công việc");
             }
