@@ -4,9 +4,12 @@ using Core.Mapper;
 using Core.Contract.Services_Contract;
 using Core.DTO.Categorydto;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 namespace TestAspWebApi.Controllers
 {
     [Route("api/[controller]")]
+    
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -19,6 +22,8 @@ namespace TestAspWebApi.Controllers
             _productServices = pro;
         }
         [HttpGet]
+        
+       
         public async Task<IActionResult> GetAllCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1)
         {
          

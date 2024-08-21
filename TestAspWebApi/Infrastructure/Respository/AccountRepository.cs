@@ -29,6 +29,7 @@ namespace Infrastructure.Respository
         public async Task<string> SignInAsync(SignIn sign)
         {
             var result = await _signInManager.PasswordSignInAsync(sign.Email, sign.Password, false, false);
+
             if (!result.Succeeded)
             {
                 return string.Empty;
@@ -36,8 +37,15 @@ namespace Infrastructure.Respository
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, sign.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                
             };
+            var user = await _userManager.FindByEmailAsync(sign.Email);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
@@ -46,6 +54,7 @@ namespace Infrastructure.Respository
                 audience: _configuration["JWT:ValidAudience"],
                 expires: DateTime.Now.AddMinutes(30),
                 claims: authClaims,
+                
                 signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
