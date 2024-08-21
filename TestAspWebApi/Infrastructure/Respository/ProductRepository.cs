@@ -45,7 +45,7 @@ namespace Infrastructure.Respository
             return product;
         }
 
-        public async Task<Product?> UpdateAsycn(int id, ProductDTO productUpdateRequest)
+        public async Task<Product?> UpdateAsycn(int id, ProductUpdateRequest productUpdateRequest)
         {
             Product product = await GetByIdAsync(id);
             if (product == null)

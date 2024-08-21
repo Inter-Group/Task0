@@ -9,7 +9,7 @@ namespace Core.Contract.Repository_Contract
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product?> GetByIdAsync(int id);
         Task<Product> CreatAsycn(Product product);
-        Task<Product?> UpdateAsycn(int id,ProductDTO productUpdateRequest);
+        Task<Product?> UpdateAsycn(int id,ProductUpdateRequest productUpdateRequest);
         Task<Product?> DeleteAsycn(int id);
         Task<Product?> GetProductByIdAsync(int id);
 

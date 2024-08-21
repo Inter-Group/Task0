@@ -80,7 +80,12 @@ namespace Infrastructure.Respository
                 UserName = sign.Email
             };
 
-            return await _userManager.CreateAsync(user, sign.Password);
+            IdentityResult isAdded = await _userManager.CreateAsync(user, sign.Password);
+            if (isAdded.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(user, "User");
+            }
+            return isAdded;
         }
 
     }
